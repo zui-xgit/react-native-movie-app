@@ -1,9 +1,5 @@
 # 🎬 `react-native-movie-app`
 
-This project is a sophisticated, cross-platform mobile application designed for **seamless movie discovery**. It's built on a modern stack to ensure performance, scalability, and a superior user interface. The application retrieves real-time movie data and utilizes a unique, backend-driven algorithm to rank and present the most popular films based on user engagement metrics.
-
----
-
 ## ✨ Core Features
 
 - **Dynamic Data Fetching:** Displays up-to-the-minute movie information and details.
@@ -50,8 +46,6 @@ git clone [https://github.com/zui-xgit/react-native-movie-app.git](https://githu
 cd react-native-movie-app
 ```
 
-# 🎬 Project Setup Guide
-
 ### 2. Installation
 
 Install all the necessary project dependencies:
@@ -95,13 +89,3 @@ Use the **Expo Go app** on your physical device (iOS/Android) to scan the genera
 or use the command-line options to run the app in a **simulator/emulator**.
 
 ---
-
-### 6. Community & Support 🤝
-
-If you encounter any bugs, need assistance with setup, or want to contribute to the project’s growth,  
-feel free to join the **official Discord community** (with over 50,000 members).  
-It’s an active space for help, collaboration, and discussion!
-
----
-
-_Let me know if you'd like to expand this README with sections like “Project Overview,” “Tech Stack,” or “Contributing.”_
