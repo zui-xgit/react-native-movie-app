@@ -49,3 +49,59 @@ Clone your project repository from GitHub and navigate into the directory:
 git clone [https://github.com/zui-xgit/react-native-movie-app.git](https://github.com/zui-xgit/react-native-movie-app.git)
 cd react-native-movie-app
 ```
+
+# 🎬 Project Setup Guide
+
+### 2. Installation
+
+Install all the necessary project dependencies:
+
+```bash
+npm install
+```
+
+---
+
+### 3. Environment Variables Setup
+
+Create a new file named `.env` in the **root directory** of the project and populate it with the following configuration keys:
+
+```env
+EXPO_PUBLIC_MOVIE_API_KEY=
+EXPO_PUBLIC_APPWRITE_PROJECT_ID=
+EXPO_PUBLIC_APPWRITE_DATABASE_ID=
+EXPO_PUBLIC_APPWRITE_COLLECTION_ID=
+```
+
+### 4. Where to Get Your Keys 🔑
+
+- **EXPO_PUBLIC_MOVIE_API_KEY**:  
+  Obtain this from [The Movie Database (TMDB)](https://www.themoviedb.org/) for movie data fetching.
+
+- **Appwrite Keys**:  
+  Sign up on the [Appwrite Console](https://appwrite.io/) to set up a new project and obtain your **Project ID**, **Database ID**, and **Collection ID** for the custom backend services.
+
+---
+
+### 5. Running the Project▶️
+
+Start the Expo development server:
+
+```bash
+npx expo start
+```
+
+Use the **Expo Go app** on your physical device (iOS/Android) to scan the generated QR code,  
+or use the command-line options to run the app in a **simulator/emulator**.
+
+---
+
+### 6. Community & Support 🤝
+
+If you encounter any bugs, need assistance with setup, or want to contribute to the project’s growth,  
+feel free to join the **official Discord community** (with over 50,000 members).  
+It’s an active space for help, collaboration, and discussion!
+
+---
+
+_Let me know if you'd like to expand this README with sections like “Project Overview,” “Tech Stack,” or “Contributing.”_
