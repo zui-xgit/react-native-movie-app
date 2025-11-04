@@ -71,17 +71,17 @@ export const updateSearchCount = async (query: string, movie: Movie) => {
 //create a new document in Apprite database ->
 
 export const getTrendingMovies = async () => {
-  try {
-    const result = await tablesDB.listRows({
-      databaseId: DATABASE_ID,
-      tableId: TABLE_ID,
-      queries: [Query.limit(5), Query.orderDesc("count")],
-    });
-    return result.rows;
-  } catch (err) {
-    console.log(err);
-    return undefined;
-  }
+  // try {
+  const result = await tablesDB.listRows({
+    databaseId: DATABASE_ID,
+    tableId: TABLE_ID,
+    queries: [Query.limit(5), Query.orderDesc("count")],
+  });
+  return result.rows;
+  // } catch (err) {
+  //   console.log(err);
+  //   return undefined;
+  // }
 
   //   try {
   //   } catch (err) {

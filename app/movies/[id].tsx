@@ -9,18 +9,20 @@ import {
 import useFetch from "@/services/useFetch";
 import { router, useLocalSearchParams } from "expo-router";
 import { Bookmark } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
   Image,
   Platform,
+  RefreshControl,
   ScrollView,
   Text,
   ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface MovieInfoProps {
   label: string;
@@ -55,6 +57,7 @@ const MovieDetails = () => {
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [checkSavedStatusLoading, setCheckSavedSatusLoading] =
     useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   const toast = (msg: string) => {
     if (Platform.OS === "android") {
@@ -62,9 +65,18 @@ const MovieDetails = () => {
     }
   };
 
-  const { data: movie, loading } = useFetch(() =>
-    fetchMovieDetails(id as string)
-  );
+  const {
+    data: movie,
+    loading,
+    refetch: refetchMovieDetails,
+  } = useFetch(() => fetchMovieDetails(id as string));
+
+  // pull to refresh
+  const onRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await refetchMovieDetails();
+    setIsRefreshing(false);
+  }, []);
 
   // useEffect hook for checking if the movie is saved
   useEffect(() => {
@@ -111,18 +123,21 @@ const MovieDetails = () => {
   };
 
   return (
-    <View className="flex-1 bg-primary relative">
+    <SafeAreaView className="flex-1 bg-primary relative">
       <ScrollView
         contentContainerStyle={{
           paddingBottom: 100,
         }}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+        }
       >
         <View>
           <Image
             source={{
               uri: `https://image.tmdb.org/t/p/w500${movie?.poster_path}`,
             }}
-            className="w-full h-[560px]"
+            className="w-full h-[560px] "
             resizeMode="cover"
           />
         </View>
@@ -220,7 +235,7 @@ const MovieDetails = () => {
           <Text className="text-white font-semibold text-base">Go back</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

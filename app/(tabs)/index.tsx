@@ -7,26 +7,34 @@ import { fetchMovies } from "@/services/api";
 import { getTrendingMovies } from "@/services/appwrite";
 import useFetch from "@/services/useFetch";
 import { useFocusEffect, useRouter } from "expo-router";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import {
   ActivityIndicator,
   FlatList,
   Image,
+  RefreshControl,
   ScrollView,
   Text,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const router = useRouter();
 
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
   const {
     data: trendingMovies,
-    loading: trendingLoading,
-    error: trendingError,
+    loading: trendingMoviesLoading,
+    error: trendingMoviesError,
     refetch: refetchTrendingMovies,
   } = useFetch(getTrendingMovies);
+
+  if (trendingMoviesError) {
+    console.log(trendingMoviesError);
+  }
 
   // refetch the trending movies whenever it is focused
   useFocusEffect(
@@ -43,10 +51,17 @@ export default function Index() {
     data: movies,
     loading: moviesLoading,
     error: moviesError,
+    refetch: moviesRefetch,
   } = useFetch(() => fetchMovies({}));
 
+  const onRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await moviesRefetch();
+    setIsRefreshing(false);
+  }, []);
+
   return (
-    <View className="flex-1 bg-primary">
+    <SafeAreaView className="flex-1 bg-primary">
       <Image source={images.bg} className="absolute w-full z-0" />
       <ScrollView
         className="flex-1 px-5"
@@ -54,33 +69,48 @@ export default function Index() {
         contentContainerStyle={{
           minHeight: "100%",
           paddingBottom: 10,
+
+          // borderWidth: 2,
+          // borderStyle: "solid",
+          // borderColor: "red",
         }}
-      >
-        <Image source={icons.logo} className="w-12 h-10 mt-20 mx-auto" />
-
-        {moviesLoading || trendingLoading ? (
-          <ActivityIndicator
-            size={"large"}
-            color={"#0000ff"}
-            className="mt-10 self-center"
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}
+            colors={["#fff"]}
+            progressBackgroundColor={"#221f3d"}
           />
-        ) : moviesError || trendingError ? (
-          <Text className="text-white mt-2 self-center">
-            Error: {moviesError?.message || trendingError?.message}
-          </Text>
-        ) : (
-          <View className="flex-1 mt-5">
-            <SearchBar
-              onPress={() => router.push("/search")}
-              placeholder="Search for a movie"
-            />
+        }
+      >
+        <Image source={icons.logo} className="w-12 h-10 mt-20 mx-auto " />
 
-            {trendingMovies && (
-              <View className="mt-10">
-                <Text className="font-bold mb-3 text-white text-lg">
-                  Trending Movies
-                </Text>
+        <View className="flex-1 mt-5">
+          <SearchBar
+            onPress={() => router.push("/search")}
+            placeholder="Search for a movie"
+          />
+          <View className="mt-5">
+            <Text className="font-bold mb-3 text-white text-lg">
+              Trending Movies
+            </Text>
 
+            {trendingMoviesLoading ? (
+              <>
+                <View className="items-center justify-center  py-4">
+                  <ActivityIndicator size={"large"} color={"blue"} />
+                </View>
+              </>
+            ) : trendingMoviesError ? (
+              <>
+                <View className=" py-4 items-center justify-center">
+                  <Text className="text-white mt-2 self-center">
+                    Error: {trendingMoviesError?.message}
+                  </Text>
+                </View>
+              </>
+            ) : (
+              <>
                 <FlatList
                   horizontal
                   showsHorizontalScrollIndicator={false}
@@ -101,32 +131,50 @@ export default function Index() {
                     />
                   )}
                 />
-              </View>
+              </>
             )}
-
-            <>
-              <Text className="text-lg text-white font-bold mt-5 mb-3">
-                Latest Movies
-              </Text>
-
-              <FlatList
-                data={movies}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <MovieCard {...item} />}
-                numColumns={3}
-                columnWrapperStyle={{
-                  justifyContent: "flex-start",
-                  gap: 20,
-                  paddingRight: 5,
-                  marginBottom: 10,
-                }}
-                className="mt-2 pb-32"
-                scrollEnabled={false}
-              />
-            </>
           </View>
-        )}
+
+          <View className="flex-1 mt-5 ">
+            <Text className="text-lg text-white font-bold mb-3">
+              Latest Movies
+            </Text>
+
+            {moviesLoading ? (
+              <>
+                <View className=" flex-1 items-center justify-center">
+                  <ActivityIndicator size={"large"} color={"blue"} />
+                </View>
+              </>
+            ) : moviesError ? (
+              <>
+                <View className=" flex-1 items-center justify-center">
+                  <Text className="text-white mt-2 self-center">
+                    Error: {moviesError?.message}
+                  </Text>
+                </View>
+              </>
+            ) : (
+              <>
+                <FlatList
+                  data={movies}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item }) => <MovieCard {...item} />}
+                  numColumns={3}
+                  columnWrapperStyle={{
+                    justifyContent: "flex-start",
+                    gap: 20,
+                    paddingRight: 5,
+                    marginBottom: 10,
+                  }}
+                  className="mt-2 pb-32"
+                  scrollEnabled={false}
+                />
+              </>
+            )}
+          </View>
+        </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

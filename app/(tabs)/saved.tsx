@@ -14,6 +14,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const EmptyState = () => {
   return (
@@ -62,7 +63,7 @@ const SavedScreen = () => {
   }
 
   return (
-    <View className="bg-primary flex-1 relative ">
+    <SafeAreaView className="bg-primary flex-1 relative ">
       <Image source={images.bg} className="absolute w-full z-0 " />
 
       <ScrollView
@@ -72,7 +73,7 @@ const SavedScreen = () => {
           paddingBottom: 10,
         }}
       >
-        <View className="flex items-center justify-center mt-20">
+        <View className="flex items-center justify-center mt-16">
           <Image source={icons.logo} className="w-12 h-10" />
         </View>
 
@@ -116,7 +117,7 @@ const SavedScreen = () => {
           )}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 export default SavedScreen;
