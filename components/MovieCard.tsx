@@ -1,6 +1,5 @@
 import { icons } from "@/constants/icons";
 import { Link } from "expo-router";
-import { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 const MovieCard = ({
@@ -10,10 +9,6 @@ const MovieCard = ({
   vote_average,
   release_date,
 }: Movie) => {
-  const [isSaved, setIsSaved] = useState<boolean>(false);
-  const handleSave = () => {
-    setIsSaved((prev) => !prev);
-  };
   return (
     <Link href={`/movies/${id}`} asChild>
       <TouchableOpacity className="w-[30%] relative">
