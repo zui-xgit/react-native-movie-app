@@ -1,0 +1,1 @@
+This folder is used to store assets used by the README.md file 

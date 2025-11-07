@@ -1,5 +1,7 @@
 # 🎬 `react-native-movie-app`
 
+![App Screenshot](README_assets/readme-title-image.png)
+
 ## ✨ Core Features
 
 - **Dynamic Data Fetching:** Displays up-to-the-minute movie information and details.
