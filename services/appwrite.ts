@@ -89,7 +89,7 @@ export const getTrendingMovies = async () => {
   //   }
 };
 
-// CHECK IF THE MOVIE IS SAVED
+// CHECK IF THE MOVIE IS SAVED  (custom code)
 export const isMovieSaved = async (movie: MovieDetails) => {
   const response = await tablesDB.listRows({
     databaseId: DATABASE_ID,

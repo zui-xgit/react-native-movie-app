@@ -17,6 +17,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SearchScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -67,33 +68,22 @@ const SearchScreen = () => {
   );
 
   return (
-    <View className="flex-1 bg-primary">
-      <Image
-        source={images.bg}
-        className="flex-1 absolute w-full z-0"
-        resizeMode="cover"
-      />
+    <SafeAreaView className="flex-1 bg-primary" edges={["top"]}>
+      <Image source={images.bg} className="absolute w-full z-0" />
       <FlatList
         data={movies}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <MovieCard {...item} />}
-        className="px-5"
         numColumns={3}
-        columnWrapperStyle={{
-          gap: 16,
-          justifyContent: "flex-start",
-          marginVertical: 16,
-        }}
-        contentContainerStyle={{
-          paddingBottom: 100,
-        }}
+        columnWrapperClassName="gap-5 left-1 mb-8  px-4"
+        contentContainerClassName="pb-32 "
         ListHeaderComponent={
           <>
             <View className="w-full flex-row justify-center mt-20 items-center">
               <Image source={icons.logo} className="w-12 h-10" />
             </View>
 
-            <View className="my-5">
+            <View className="my-5 px-5">
               <SearchBar
                 value={searchQuery}
                 onChangeText={setSearchQuery}
@@ -117,10 +107,12 @@ const SearchScreen = () => {
             )}
 
             {!loading && !error && searchQuery.trim() && movies?.length > 0 && (
-              <Text className="text-xl text-white font-bold">
-                Search Results for {""}
-                <Text className="text-accent">{searchQuery}</Text>
-              </Text>
+              <View className="px-5 py-4">
+                <Text className="text-xl text-white font-bold">
+                  Search Results for {""}
+                  <Text className="text-accent">{searchQuery}</Text>
+                </Text>
+              </View>
             )}
           </>
         }
@@ -134,7 +126,7 @@ const SearchScreen = () => {
           ) : null
         }
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
